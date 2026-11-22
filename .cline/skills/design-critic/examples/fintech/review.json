@@ -1,0 +1,390 @@
+{
+  "schema_version": "0.1.0",
+  "meta": {
+    "title": "Design review: international money transfer (iOS)",
+    "scope": "Amount entry and review screens of the send-money flow, from two screenshots and a journey description.",
+    "created": "2026-11-21"
+  },
+  "input_context": {
+    "sources": [
+      "screenshot",
+      "journey"
+    ],
+    "platform": "ios",
+    "product_domain": "fintech",
+    "audience": "Adults sending money abroad, mostly occasional users",
+    "goals": [
+      "Increase completed transfers",
+      "Reduce support contacts about unexpected fees"
+    ],
+    "screens": [
+      {
+        "id": "transfer-amount",
+        "name": "Enter amount",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "id": "transfer-review",
+        "name": "Review transfer",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "journey": {
+      "name": "Send money",
+      "steps": [
+        {
+          "screen_id": "transfer-amount",
+          "action": "Enter amount and choose recipient",
+          "outcome": "Continue to review"
+        },
+        {
+          "screen_id": "transfer-review",
+          "action": "Check details and confirm",
+          "outcome": "Transfer is submitted"
+        }
+      ]
+    }
+  },
+  "coverage": [
+    {
+      "dimension": "usability",
+      "assessed": true
+    },
+    {
+      "dimension": "information_architecture",
+      "assessed": false,
+      "limitation": "Only two screens of one flow were supplied, so app-wide structure cannot be judged."
+    },
+    {
+      "dimension": "visual_hierarchy",
+      "assessed": true
+    },
+    {
+      "dimension": "interaction_design",
+      "assessed": true
+    },
+    {
+      "dimension": "accessibility",
+      "assessed": true
+    },
+    {
+      "dimension": "content_design",
+      "assessed": true
+    },
+    {
+      "dimension": "design_system",
+      "assessed": false,
+      "limitation": "No component library or token data was supplied; two screens are too few to judge consistency."
+    },
+    {
+      "dimension": "product_alignment",
+      "assessed": true
+    }
+  ],
+  "executive_summary": {
+    "verdict": "The flow is short and the amount screen is clear, but the review screen hides the information users most need before committing money: the fee and the delivery time. Fixing that is the highest-value change and directly supports the goal of fewer fee-related support contacts.",
+    "top_finding_ids": [
+      "F-001",
+      "F-002",
+      "F-003"
+    ],
+    "strengths": [
+      "The amount screen has one clear task, a large numeric input and a visible exchange rate.",
+      "The recipient is shown with name and last digits of the account, which supports error checking."
+    ]
+  },
+  "findings": [
+    {
+      "id": "F-001",
+      "dimension": "usability",
+      "title": "Fee and delivery time are shown only in small grey text below the Confirm button",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "transfer-review",
+          "region": "below the Confirm button, bottom of screen",
+          "observation": "The line 'Fee $4.99 - arrives in 1-2 days' sits under the Confirm button in small grey text, while the summary card above lists only amount and recipient."
+        }
+      ],
+      "impact": "Users commit money before seeing the cost, which risks surprise at statement time and support contacts about fees.",
+      "severity": "major",
+      "confidence": "high",
+      "reach": "primary_flow",
+      "recommendation": "Move fee, total debited and delivery estimate into the summary card above the button, as labelled rows, and show the total the sender pays.",
+      "rationale": "People decide on the confirmation screen using what is inside the summary; costs placed after the action read as fine print and undermine trust in a money product.",
+      "effort": "low",
+      "annotation_ids": [
+        "A-001"
+      ]
+    },
+    {
+      "id": "F-002",
+      "dimension": "accessibility",
+      "title": "Helper and rate text is low-contrast grey at a small size",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "transfer-amount",
+          "region": "exchange-rate line under the amount field",
+          "observation": "The rate line is light grey on a white background at roughly 11pt.",
+          "measurement": "approx. 2.8:1 contrast, estimated from screenshot"
+        }
+      ],
+      "impact": "Users with low vision or in bright light may miss the rate, which is the information needed to judge the transfer.",
+      "severity": "major",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Darken the rate text to a measured contrast of at least 4.5:1 and raise it to at least 13pt, then verify with a contrast tool on the real colour values.",
+      "rationale": "The estimate comes from a compressed screenshot, so the exact ratio needs measuring, but the visual weight is low enough that the key rate is easy to overlook.",
+      "effort": "low",
+      "wcag_refs": [
+        {
+          "criterion": "1.4.3",
+          "name": "Contrast (Minimum)",
+          "status": "needs_verification"
+        }
+      ],
+      "annotation_ids": [
+        "A-002"
+      ]
+    },
+    {
+      "id": "F-003",
+      "dimension": "visual_hierarchy",
+      "title": "Confirm and Cancel use the same filled button style",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "transfer-review",
+          "region": "button pair at the bottom",
+          "observation": "Confirm and Cancel are both full-width filled buttons of the same height; only the colour differs, and Cancel is a saturated red."
+        }
+      ],
+      "impact": "A saturated red button draws as much attention as the primary action and invites an accidental tap on the wrong choice.",
+      "severity": "moderate",
+      "confidence": "high",
+      "reach": "primary_flow",
+      "recommendation": "Keep Confirm as the single filled button and turn Cancel into a text button or a back link, using a neutral colour.",
+      "rationale": "One dominant action per screen makes the next step obvious; destructive-looking styling on a harmless exit adds noise and anxiety.",
+      "effort": "low",
+      "annotation_ids": [
+        "A-003"
+      ]
+    },
+    {
+      "id": "F-004",
+      "dimension": "content_design",
+      "title": "Recipient section uses the internal term 'Beneficiary'",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "transfer-review",
+          "region": "section heading above recipient name",
+          "observation": "The heading reads 'Beneficiary details', while the amount screen calls the same person 'Recipient'."
+        }
+      ],
+      "impact": "The term shifts mid-flow and is banking jargon that occasional senders may not map to the person they chose.",
+      "severity": "minor",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Use 'Recipient' on both screens and reserve any legal term for the receipt.",
+      "rationale": "Consistent plain words reduce the chance that users stop to wonder whether this is a different person or step.",
+      "effort": "low"
+    }
+  ],
+  "assumptions": [
+    "The journey description is accurate: there are no further screens between review and submission."
+  ],
+  "open_questions": [
+    "Is the fee dynamic per corridor? If so, the review screen must show the final fee, not an estimate.",
+    "Is there analytics on drop-off at the review screen to confirm the fee concern?"
+  ],
+  "scorecard": {
+    "formula_version": "1.0",
+    "profile": "default",
+    "dimensions": [
+      {
+        "dimension": "usability",
+        "assessed": true,
+        "score": 80,
+        "finding_count": 1,
+        "penalty": 20,
+        "rationale": "1 finding(s); total penalty 20."
+      },
+      {
+        "dimension": "information_architecture",
+        "assessed": false,
+        "score": null,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "Not assessed: Only two screens of one flow were supplied, so app-wide structure cannot be judged."
+      },
+      {
+        "dimension": "visual_hierarchy",
+        "assessed": true,
+        "score": 90,
+        "finding_count": 1,
+        "penalty": 10,
+        "rationale": "1 finding(s); total penalty 10."
+      },
+      {
+        "dimension": "interaction_design",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      },
+      {
+        "dimension": "accessibility",
+        "assessed": true,
+        "score": 88,
+        "finding_count": 1,
+        "penalty": 12,
+        "rationale": "1 finding(s); total penalty 12."
+      },
+      {
+        "dimension": "content_design",
+        "assessed": true,
+        "score": 97.6,
+        "finding_count": 1,
+        "penalty": 2.4,
+        "rationale": "1 finding(s); total penalty 2.4."
+      },
+      {
+        "dimension": "design_system",
+        "assessed": false,
+        "score": null,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "Not assessed: No component library or token data was supplied; two screens are too few to judge consistency."
+      },
+      {
+        "dimension": "product_alignment",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      }
+    ],
+    "overall": 90.8,
+    "band": "good",
+    "score_confidence": "medium"
+  },
+  "annotations": [
+    {
+      "id": "A-001",
+      "screen_id": "transfer-review",
+      "finding_id": "F-001",
+      "bbox": {
+        "x": 0.08,
+        "y": 0.82,
+        "width": 0.84,
+        "height": 0.04
+      },
+      "label": "Fee and delivery time shown after the button",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-002",
+      "screen_id": "transfer-amount",
+      "finding_id": "F-002",
+      "bbox": {
+        "x": 0.08,
+        "y": 0.34,
+        "width": 0.6,
+        "height": 0.03
+      },
+      "label": "Low-contrast exchange rate",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-003",
+      "screen_id": "transfer-review",
+      "finding_id": "F-003",
+      "bbox": {
+        "x": 0.06,
+        "y": 0.87,
+        "width": 0.88,
+        "height": 0.1
+      },
+      "label": "Two same-weight buttons",
+      "precision": "approximate"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "C-001",
+      "finding_ids": [
+        "F-001",
+        "F-003"
+      ],
+      "title": "Cost-first review card",
+      "description": "Replace the thin summary with a card that lists amount, fee, total debited, recipient gets and arrival date as labelled rows, followed by one primary Confirm button with a text-only Cancel.",
+      "tradeoffs": "The card is taller, so on small phones the button may sit just below the fold; a sticky footer button mitigates this.",
+      "expected_impact": "Fewer fee surprises and fewer cancellations caused by misreading the button pair; testable by comparing fee-related support contacts."
+    }
+  ],
+  "redesign_specs": [
+    {
+      "id": "RS-001",
+      "finding_ids": [
+        "F-001",
+        "F-003"
+      ],
+      "title": "Review screen summary and actions",
+      "screen_id": "transfer-review",
+      "summary": "Show all costs in the summary above the action and make Confirm the only prominent button.",
+      "layout": [
+        "Summary card at the top with five labelled rows",
+        "Sticky footer containing the Confirm button and a text Cancel link beneath it"
+      ],
+      "components": [
+        {
+          "name": "SummaryRow",
+          "change": "Label left, value right, total row in semibold"
+        },
+        {
+          "name": "Button/Primary",
+          "change": "Single filled button, full width, 52pt high"
+        },
+        {
+          "name": "Button/Text",
+          "change": "Neutral colour for Cancel"
+        }
+      ],
+      "copy": [
+        {
+          "element": "Section heading",
+          "current": "Beneficiary details",
+          "proposed": "Recipient"
+        },
+        {
+          "element": "Fee row",
+          "proposed": "Fee"
+        }
+      ],
+      "states": [
+        {
+          "name": "Loading fee",
+          "behaviour": "Show skeleton rows and disable Confirm until the final fee is returned"
+        }
+      ],
+      "accessibility_notes": [
+        "Value text at least 16pt and contrast verified on real colour values"
+      ],
+      "acceptance_criteria": [
+        "Fee, total debited and arrival date are visible without scrolling on a 390x844 screen before the Confirm button",
+        "Cancel is not a filled button"
+      ]
+    }
+  ],
+  "limitations": [
+    "Reviewed from two static screenshots; interaction states, error handling and animations were not visible.",
+    "Contrast values are estimated from screenshots and must be measured on the source colours."
+  ],
+  "wcag_conformance_verified": false
+}

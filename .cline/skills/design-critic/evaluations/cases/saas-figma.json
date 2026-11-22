@@ -1,0 +1,16 @@
+{
+  "id": "saas-figma-context",
+  "kind": "review",
+  "category": "recall",
+  "description": "With Figma context, the radius mismatch must be found as a high-confidence design-system finding; no keyboard findings may appear.",
+  "review": "../examples/saas/review.json",
+  "expect": {
+    "valid": true,
+    "must_find": [
+      { "dimension": "design_system", "keywords": ["radius"] },
+      { "dimension": "product_alignment", "keywords": ["kpi"] }
+    ],
+    "must_not_find": [{ "keywords": ["keyboard"] }],
+    "forbidden_dimensions": ["interaction_design"]
+  }
+}

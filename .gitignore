@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+# Logs and env
+*.log
+npm-debug.log*
+.env
+.env.*
+
+# Generated / scratch output
+coverage/
+tmp/
+.cline/skills/design-critic/evaluations/outputs/

@@ -1,0 +1,322 @@
+{
+  "schema_version": "0.1.0",
+  "meta": {
+    "title": "Design review: analytics dashboard (web)",
+    "scope": "Main dashboard and settings table of a B2B analytics SaaS, from a screenshot plus Figma design context.",
+    "created": "2026-11-21"
+  },
+  "input_context": {
+    "sources": [
+      "screenshot",
+      "figma"
+    ],
+    "platform": "web",
+    "product_domain": "saas",
+    "audience": "Marketing managers checking weekly performance",
+    "goals": [
+      "Increase weekly active users",
+      "Improve trial-to-paid conversion"
+    ],
+    "screens": [
+      {
+        "id": "dashboard",
+        "name": "Dashboard",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "id": "team-settings",
+        "name": "Team settings",
+        "width": 1440,
+        "height": 900
+      }
+    ],
+    "design_context": {
+      "text_styles": [
+        "Heading/24",
+        "Body/14",
+        "Caption/12"
+      ],
+      "buttons": [
+        {
+          "screen": "dashboard",
+          "name": "Export",
+          "radius": 6,
+          "fill": "#2F5BEA"
+        },
+        {
+          "screen": "team-settings",
+          "name": "Invite member",
+          "radius": 4,
+          "fill": "#2F5BEA"
+        }
+      ],
+      "colors_used": [
+        "#2F5BEA",
+        "#6B7280",
+        "#F9FAFB",
+        "#FFFFFF"
+      ]
+    }
+  },
+  "coverage": [
+    {
+      "dimension": "usability",
+      "assessed": true
+    },
+    {
+      "dimension": "information_architecture",
+      "assessed": false,
+      "limitation": "Only two screens were supplied, with no navigation map or content inventory."
+    },
+    {
+      "dimension": "visual_hierarchy",
+      "assessed": true
+    },
+    {
+      "dimension": "interaction_design",
+      "assessed": false,
+      "limitation": "No prototype or interaction states were supplied beyond static frames."
+    },
+    {
+      "dimension": "accessibility",
+      "assessed": true
+    },
+    {
+      "dimension": "content_design",
+      "assessed": true
+    },
+    {
+      "dimension": "design_system",
+      "assessed": true
+    },
+    {
+      "dimension": "product_alignment",
+      "assessed": true
+    }
+  ],
+  "executive_summary": {
+    "verdict": "The dashboard is well organised and the type scale is disciplined. Its main weakness is that the headline KPI row gives numbers without context, so the weekly question 'is this good or bad?' goes unanswered, which limits the habit-forming value the product needs. The primary button radius also differs between the two screens.",
+    "top_finding_ids": [
+      "F-001",
+      "F-002"
+    ],
+    "strengths": [
+      "A clear three-level type scale (24, 14, 12) is applied consistently across both screens.",
+      "The layout uses a stable left navigation and a card grid, so related metrics are grouped and scannable."
+    ]
+  },
+  "findings": [
+    {
+      "id": "F-001",
+      "dimension": "product_alignment",
+      "title": "KPI cards show values with no comparison or trend",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "dashboard",
+          "region": "top row of four KPI cards",
+          "observation": "Each card shows a number and a label (for example 'Sessions 12,480') with no change versus the previous period, no sparkline and no target."
+        }
+      ],
+      "impact": "Without a reference, users cannot tell whether performance improved, so there is little reason to return weekly and no cue to act.",
+      "severity": "major",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Add a period-over-period delta with direction and colour-independent indicator (arrow plus text) to each KPI card, and let users set a target for one metric.",
+      "rationale": "Weekly check-ins are driven by change, not totals; a delta turns the card into a decision signal and supports the weekly active user goal. Confidence is medium because the intended audience behaviour was not tested.",
+      "effort": "medium",
+      "annotation_ids": [
+        "A-001"
+      ]
+    },
+    {
+      "id": "F-002",
+      "dimension": "design_system",
+      "title": "Primary button corner radius differs between screens",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "dashboard",
+          "region": "Export button",
+          "observation": "Figma context lists the Export button with a 6px radius and fill #2F5BEA."
+        },
+        {
+          "screen_id": "team-settings",
+          "region": "Invite member button",
+          "observation": "Figma context lists the Invite member button with a 4px radius and the same fill #2F5BEA."
+        }
+      ],
+      "impact": "Two radii for the same role suggest a missing or bypassed button component, which will multiply as screens are added.",
+      "severity": "minor",
+      "confidence": "high",
+      "reach": "secondary",
+      "recommendation": "Define one primary button component with a single radius token and replace both instances; check the library for other detached buttons.",
+      "rationale": "A single source of truth keeps primary actions consistent and lowers maintenance cost; the Figma data makes this a measured difference rather than a visual guess.",
+      "effort": "low",
+      "annotation_ids": [
+        "A-002"
+      ]
+    },
+    {
+      "id": "F-003",
+      "dimension": "accessibility",
+      "title": "Grey caption text sits close to the 4.5:1 contrast threshold",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "dashboard",
+          "region": "KPI card captions",
+          "observation": "Captions use #6B7280 at 12px on a #F9FAFB card background.",
+          "measurement": "approx. 4.6:1 computed from the listed hex values"
+        }
+      ],
+      "impact": "Contrast is close to the threshold for small text, so any lighter shade or overlay would drop below it, and the captions are the only place the metric period is stated.",
+      "severity": "suggestion",
+      "confidence": "medium",
+      "reach": "secondary",
+      "recommendation": "Keep the caption colour no lighter than #6B7280 and consider #4B5563 for 12px captions to leave a safety margin.",
+      "rationale": "The current pair appears to pass the common threshold for normal text, but small text on tinted surfaces is where drift causes failures. This needs checking in the built product.",
+      "effort": "low",
+      "wcag_refs": [
+        {
+          "criterion": "1.4.3",
+          "name": "Contrast (Minimum)",
+          "status": "needs_verification"
+        }
+      ]
+    }
+  ],
+  "assumptions": [
+    "The Figma context reflects the intended production styles, not stale frames."
+  ],
+  "open_questions": [
+    "Is there a defined comparison period (previous week, previous month) the product already computes?",
+    "Are there other button variants in the library that explain the 4px radius?"
+  ],
+  "scorecard": {
+    "formula_version": "1.0",
+    "profile": "default",
+    "dimensions": [
+      {
+        "dimension": "usability",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      },
+      {
+        "dimension": "information_architecture",
+        "assessed": false,
+        "score": null,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "Not assessed: Only two screens were supplied, with no navigation map or content inventory."
+      },
+      {
+        "dimension": "visual_hierarchy",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      },
+      {
+        "dimension": "interaction_design",
+        "assessed": false,
+        "score": null,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "Not assessed: No prototype or interaction states were supplied beyond static frames."
+      },
+      {
+        "dimension": "accessibility",
+        "assessed": true,
+        "score": 99.7,
+        "finding_count": 1,
+        "penalty": 0.3,
+        "rationale": "1 finding(s); total penalty 0.3."
+      },
+      {
+        "dimension": "content_design",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      },
+      {
+        "dimension": "design_system",
+        "assessed": true,
+        "score": 98,
+        "finding_count": 1,
+        "penalty": 2,
+        "rationale": "1 finding(s); total penalty 2."
+      },
+      {
+        "dimension": "product_alignment",
+        "assessed": true,
+        "score": 88,
+        "finding_count": 1,
+        "penalty": 12,
+        "rationale": "1 finding(s); total penalty 12."
+      }
+    ],
+    "overall": 98.2,
+    "band": "good",
+    "score_confidence": "medium"
+  },
+  "annotations": [
+    {
+      "id": "A-001",
+      "screen_id": "dashboard",
+      "finding_id": "F-001",
+      "bbox": {
+        "x": 0.2,
+        "y": 0.14,
+        "width": 0.76,
+        "height": 0.16
+      },
+      "label": "KPI cards without comparison",
+      "precision": "exact",
+      "pixel_bbox": {
+        "x": 288,
+        "y": 126,
+        "width": 1094.4,
+        "height": 144
+      }
+    },
+    {
+      "id": "A-002",
+      "screen_id": "team-settings",
+      "finding_id": "F-002",
+      "bbox": {
+        "x": 0.84,
+        "y": 0.06,
+        "width": 0.11,
+        "height": 0.05
+      },
+      "label": "Invite button radius 4px",
+      "precision": "exact"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "C-001",
+      "finding_ids": [
+        "F-001"
+      ],
+      "title": "KPI cards with change and context",
+      "description": "Each KPI card shows the value, a delta against the previous period with an arrow and text, and a small sparkline of the last eight weeks; a card can be pinned with a target.",
+      "tradeoffs": "Adds density to the top row and requires the backend to supply comparison data.",
+      "expected_impact": "Gives a reason to return weekly, measurable as weekly active users and return visits within seven days."
+    }
+  ],
+  "redesign_specs": [],
+  "limitations": [
+    "Interaction design and information architecture were not assessable from the supplied inputs.",
+    "Contrast was computed from listed hex values; rendering, overlays and states were not checked."
+  ],
+  "wcag_conformance_verified": false
+}

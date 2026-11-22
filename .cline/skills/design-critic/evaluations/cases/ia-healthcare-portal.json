@@ -1,0 +1,28 @@
+{
+  "id": "ia-healthcare-portal-structure",
+  "kind": "review",
+  "category": "recall",
+  "description": "Multi-screen IA review must find the overlapping Account/Profile/Settings groups and billing hidden under Help, stay within assessed dimensions, and not invent visual or accessibility problems.",
+  "review": "../examples/healthcare-portal/review.json",
+  "expect": {
+    "valid": true,
+    "min_findings": 3,
+    "max_findings": 6,
+    "required_dimensions": ["information_architecture"],
+    "must_find": [
+      { "dimension": "information_architecture", "keywords": ["overlap", "insurance"] },
+      { "dimension": "information_architecture", "keywords": ["billing", "help"] },
+      { "dimension": "information_architecture", "keywords": ["selected", "heading"] }
+    ],
+    "must_not_find": [
+      { "keywords": ["contrast"] },
+      { "keywords": ["font size"] },
+      { "keywords": ["keyboard"] }
+    ],
+    "forbidden_dimensions": ["accessibility", "interaction_design", "design_system"],
+    "max_severity": "major",
+    "min_unassessed": 3,
+    "min_open_questions": 2,
+    "score_confidence_at_most": "medium"
+  }
+}

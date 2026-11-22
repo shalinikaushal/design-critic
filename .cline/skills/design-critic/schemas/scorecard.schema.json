@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://design-critic.dev/schemas/scorecard.schema.json",
+  "title": "Design quality scorecard",
+  "description": "Numbers are computed by scripts/compute-score.mjs (formula v1.0). Do not hand-edit them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["formula_version", "profile", "dimensions", "overall", "band", "score_confidence"],
+  "properties": {
+    "formula_version": { "const": "1.0" },
+    "profile": { "type": "string", "minLength": 1 },
+    "dimensions": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["dimension", "assessed", "score", "finding_count", "penalty", "rationale"],
+        "properties": {
+          "dimension": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/dimension" },
+          "assessed": { "type": "boolean" },
+          "score": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+          "finding_count": { "type": "integer", "minimum": 0 },
+          "penalty": { "type": "number", "minimum": 0 },
+          "rationale": { "type": "string", "minLength": 10 }
+        }
+      }
+    },
+    "overall": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "band": { "enum": ["excellent", "good", "needs_work", "poor", "critical", "not_scored"] },
+    "score_confidence": { "enum": ["high", "medium", "low"] }
+  }
+}

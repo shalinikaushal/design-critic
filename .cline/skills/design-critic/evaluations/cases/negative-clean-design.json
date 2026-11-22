@@ -1,0 +1,18 @@
+{
+  "id": "negative-clean-mobile",
+  "kind": "review",
+  "category": "negative",
+  "description": "A mostly sound design must yield few findings, none above moderate, a high score, and no invented problems.",
+  "review": "../examples/mobile/review.json",
+  "expect": {
+    "valid": true,
+    "max_findings": 2,
+    "max_severity": "moderate",
+    "min_overall": 90,
+    "must_not_find": [
+      { "keywords": ["contrast"] },
+      { "keywords": ["navigation"] },
+      { "keywords": ["inconsistent"] }
+    ]
+  }
+}

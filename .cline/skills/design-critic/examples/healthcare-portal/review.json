@@ -1,0 +1,493 @@
+{
+  "schema_version": "0.1.0",
+  "meta": {
+    "title": "Design review: patient portal structure (web)",
+    "scope": "Information architecture of the patient portal across four screens: home, account, settings and billing.",
+    "created": "2026-11-21"
+  },
+  "input_context": {
+    "sources": [
+      "screenshot",
+      "journey"
+    ],
+    "platform": "web",
+    "product_domain": "healthcare",
+    "audience": "Adult patients, many of them occasional users",
+    "goals": [
+      "Increase on-time bill payment",
+      "Reduce support calls about where to find things"
+    ],
+    "screens": [
+      {
+        "id": "portal-home",
+        "name": "Portal home",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "id": "account",
+        "name": "Account",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "id": "settings",
+        "name": "Settings",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "id": "billing",
+        "name": "Billing",
+        "width": 1440,
+        "height": 900
+      }
+    ],
+    "journey": {
+      "name": "Update insurance and pay a balance",
+      "steps": [
+        {
+          "screen_id": "portal-home",
+          "action": "Look in the navigation for insurance and billing",
+          "outcome": "No obvious destination for billing"
+        },
+        {
+          "screen_id": "account",
+          "action": "Open Account and look for insurance and a balance",
+          "outcome": "Finds insurance but no balance"
+        },
+        {
+          "screen_id": "settings",
+          "action": "Check Settings for billing",
+          "outcome": "Finds payment reminders only"
+        },
+        {
+          "screen_id": "billing",
+          "action": "Reach billing through the Help menu and pay",
+          "outcome": "Balance is paid"
+        }
+      ]
+    }
+  },
+  "coverage": [
+    {
+      "dimension": "usability",
+      "assessed": true
+    },
+    {
+      "dimension": "information_architecture",
+      "assessed": true
+    },
+    {
+      "dimension": "visual_hierarchy",
+      "assessed": true
+    },
+    {
+      "dimension": "interaction_design",
+      "assessed": false,
+      "limitation": "Only static screens were supplied, so states and control behaviour were not visible."
+    },
+    {
+      "dimension": "accessibility",
+      "assessed": false,
+      "limitation": "The captures were described rather than supplied as measurable images, so contrast and target sizes could not be estimated."
+    },
+    {
+      "dimension": "content_design",
+      "assessed": true
+    },
+    {
+      "dimension": "design_system",
+      "assessed": false,
+      "limitation": "No tokens or component data were supplied, and four screens of one product area are too few to judge system consistency."
+    },
+    {
+      "dimension": "product_alignment",
+      "assessed": true
+    }
+  ],
+  "executive_summary": {
+    "verdict": "The portal's main weakness is structure, not styling. The task patients came for, paying a balance, sits under Help, and insurance-related content is split across overlapping Account, Profile and Settings areas. This plausibly explains the support calls about where things are and works against on-time payment. Fixing the navigation labels and moving billing into the main navigation are the highest-value changes.",
+    "top_finding_ids": [
+      "F-002",
+      "F-001",
+      "F-003"
+    ],
+    "strengths": [
+      "The home page leads with upcoming appointments, which matches the most common reason for visiting.",
+      "Account and Settings pages use clearly titled sections, so content within each page is easy to scan.",
+      "The billing page shows the balance due and a single Pay now action together."
+    ]
+  },
+  "findings": [
+    {
+      "id": "F-001",
+      "dimension": "information_architecture",
+      "title": "Account, Profile and Settings overlap, so insurance and payment details are split across them",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "portal-home",
+          "region": "left navigation, items five to seven",
+          "observation": "The navigation lists 'Account', 'Profile' and 'Settings' as three separate items with no descriptions or sub-labels."
+        },
+        {
+          "screen_id": "account",
+          "region": "Insurance and Payment methods sections",
+          "observation": "The Account page holds an 'Insurance' section and a 'Payment methods' section."
+        },
+        {
+          "screen_id": "settings",
+          "region": "Payment reminders and Insurance sharing sections",
+          "observation": "The Settings page holds 'Payment reminders' and 'Insurance sharing' sections, so insurance and payment topics appear under two different navigation items."
+        }
+      ],
+      "impact": "Patients updating insurance cannot predict which item holds it, may check up to three pages and may change the wrong setting; this matches the support calls about where things are.",
+      "severity": "major",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Merge Account and Profile into one 'Account' area with tabs for Personal details, Insurance and Payments, keep Settings for preferences such as notifications and language, and move 'Insurance sharing' next to Insurance.",
+      "rationale": "Grouping by the task patients bring ('manage my insurance') rather than by data type removes the choice between near-synonyms. Confidence is medium because patient mental models were not tested; a tree test of the revised labels would confirm it.",
+      "effort": "medium",
+      "annotation_ids": [
+        "A-001",
+        "A-002",
+        "A-003"
+      ]
+    },
+    {
+      "id": "F-002",
+      "dimension": "information_architecture",
+      "title": "Billing and balance due are only reachable through the Help menu",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "portal-home",
+          "region": "Help dropdown, top right",
+          "observation": "The Help dropdown lists 'FAQs', 'Contact us' and 'Billing & payments'; no navigation item, banner or home-page card mentions billing."
+        },
+        {
+          "screen_id": "account",
+          "region": "page body",
+          "observation": "The Account page shows 'Payment methods' but no balance due and no link to billing."
+        },
+        {
+          "screen_id": "billing",
+          "region": "breadcrumb above the page heading",
+          "observation": "The breadcrumb reads 'Help / Billing & payments', and the page shows a balance due with a 'Pay now' button."
+        }
+      ],
+      "impact": "Patients with an outstanding balance look under Account or Settings first, delaying payment and adding calls to support; this works against the on-time payment goal.",
+      "severity": "major",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Add a top-level 'Billing' item to the main navigation, show a balance-due notice on the home page whenever a balance exists, and keep the Help link as a secondary route.",
+      "rationale": "Paying a bill is a frequent, time-sensitive task, so it belongs with primary destinations instead of under support, and a notice puts it in front of patients who would not think to look. Confidence is medium because the screens do not show how patients usually arrive at billing.",
+      "effort": "medium",
+      "annotation_ids": [
+        "A-004",
+        "A-005"
+      ]
+    },
+    {
+      "id": "F-003",
+      "dimension": "information_architecture",
+      "title": "Navigation shows no current location on the Account and Settings pages",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "account",
+          "region": "left navigation and page heading",
+          "observation": "No navigation item has a selected style on this page, and the heading reads 'Details' rather than the navigation label 'Account'."
+        },
+        {
+          "screen_id": "settings",
+          "region": "left navigation and page heading",
+          "observation": "No navigation item has a selected style on this page, and the heading reads 'Preferences' rather than the navigation label 'Settings'."
+        }
+      ],
+      "impact": "Patients cannot confirm where they are, and the heading does not match the item they clicked, so they may wonder whether they arrived in the right place and keep exploring.",
+      "severity": "moderate",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Give the current navigation item a distinct selected style and use the navigation label as the page heading ('Account', 'Settings').",
+      "rationale": "A visible current location and a heading that echoes the clicked label confirm each step of the path, which matters most for occasional users. Confidence is medium because the screens may omit a selected state that exists in the product.",
+      "effort": "low",
+      "annotation_ids": [
+        "A-006",
+        "A-007"
+      ]
+    },
+    {
+      "id": "F-004",
+      "dimension": "content_design",
+      "title": "The billing page is titled 'Statement center' but is linked as 'Billing & payments'",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "billing",
+          "region": "page heading",
+          "observation": "The heading reads 'Statement center', while the Help menu entry and the breadcrumb both read 'Billing & payments'."
+        }
+      ],
+      "impact": "Patients who clicked 'Billing & payments' see a different name on arrival, which can make them doubt they are in the right place.",
+      "severity": "minor",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Use 'Billing & payments' as the page heading, or rename the link to match, and apply the same name everywhere billing is mentioned.",
+      "rationale": "One name per destination lets patients confirm arrival without rereading the page. The effect is small, so it is rated minor.",
+      "effort": "low"
+    }
+  ],
+  "assumptions": [
+    "The four screens show the complete main navigation and nothing is hidden in menus that were not captured."
+  ],
+  "open_questions": [
+    "What is on the Profile page, and how does it differ from Account?",
+    "Is there a search field or a balance notice elsewhere that the supplied screens do not show?",
+    "How do patients currently arrive at billing: Help, search, email links or phone guidance?"
+  ],
+  "scorecard": {
+    "formula_version": "1.0",
+    "profile": "default",
+    "dimensions": [
+      {
+        "dimension": "usability",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      },
+      {
+        "dimension": "information_architecture",
+        "assessed": true,
+        "score": 70,
+        "finding_count": 3,
+        "penalty": 30,
+        "rationale": "3 finding(s); total penalty 30."
+      },
+      {
+        "dimension": "visual_hierarchy",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      },
+      {
+        "dimension": "interaction_design",
+        "assessed": false,
+        "score": null,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "Not assessed: Only static screens were supplied, so states and control behaviour were not visible."
+      },
+      {
+        "dimension": "accessibility",
+        "assessed": false,
+        "score": null,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "Not assessed: The captures were described rather than supplied as measurable images, so contrast and target sizes could not be estimated."
+      },
+      {
+        "dimension": "content_design",
+        "assessed": true,
+        "score": 97.6,
+        "finding_count": 1,
+        "penalty": 2.4,
+        "rationale": "1 finding(s); total penalty 2.4."
+      },
+      {
+        "dimension": "design_system",
+        "assessed": false,
+        "score": null,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "Not assessed: No tokens or component data were supplied, and four screens of one product area are too few to judge system consistency."
+      },
+      {
+        "dimension": "product_alignment",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      }
+    ],
+    "overall": 94.3,
+    "band": "good",
+    "score_confidence": "medium"
+  },
+  "annotations": [
+    {
+      "id": "A-001",
+      "screen_id": "portal-home",
+      "finding_id": "F-001",
+      "bbox": {
+        "x": 0.01,
+        "y": 0.4,
+        "width": 0.14,
+        "height": 0.2
+      },
+      "label": "Account, Profile and Settings items",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-002",
+      "screen_id": "account",
+      "finding_id": "F-001",
+      "bbox": {
+        "x": 0.22,
+        "y": 0.3,
+        "width": 0.5,
+        "height": 0.35
+      },
+      "label": "Insurance and Payment methods sections",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-003",
+      "screen_id": "settings",
+      "finding_id": "F-001",
+      "bbox": {
+        "x": 0.22,
+        "y": 0.45,
+        "width": 0.5,
+        "height": 0.3
+      },
+      "label": "Payment reminders and Insurance sharing",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-004",
+      "screen_id": "portal-home",
+      "finding_id": "F-002",
+      "bbox": {
+        "x": 0.8,
+        "y": 0.04,
+        "width": 0.17,
+        "height": 0.22
+      },
+      "label": "Billing listed under the Help menu",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-005",
+      "screen_id": "billing",
+      "finding_id": "F-002",
+      "bbox": {
+        "x": 0.22,
+        "y": 0.05,
+        "width": 0.3,
+        "height": 0.04
+      },
+      "label": "Breadcrumb shows Help as the parent",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-006",
+      "screen_id": "account",
+      "finding_id": "F-003",
+      "bbox": {
+        "x": 0.01,
+        "y": 0.15,
+        "width": 0.14,
+        "height": 0.45
+      },
+      "label": "No selected item in navigation",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-007",
+      "screen_id": "settings",
+      "finding_id": "F-003",
+      "bbox": {
+        "x": 0.22,
+        "y": 0.08,
+        "width": 0.25,
+        "height": 0.06
+      },
+      "label": "Heading 'Preferences' differs from 'Settings'",
+      "precision": "approximate"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "C-001",
+      "finding_ids": [
+        "F-001",
+        "F-002"
+      ],
+      "title": "Task-based navigation with billing promoted",
+      "description": "Reduce the navigation to Home, Appointments, Records, Messages, Billing, Account and Help. Account holds tabs for Personal details, Insurance and Payments; Settings content moves into an Account tab called Preferences. The home page shows a balance-due card with a Pay now button when a balance exists.",
+      "tradeoffs": "Moving Settings content into Account changes familiar locations for returning patients, so a short notice and redirects from old addresses are needed. A balance card adds a prominent element that must be hidden when nothing is owed.",
+      "expected_impact": "Patients should find insurance and billing in fewer steps, which could be measured as fewer support calls about locations and faster time to payment, and tested with a tree test before build."
+    }
+  ],
+  "redesign_specs": [
+    {
+      "id": "RS-001",
+      "finding_ids": [
+        "F-001",
+        "F-002",
+        "F-003"
+      ],
+      "title": "Main navigation and account area",
+      "screen_id": "portal-home",
+      "summary": "Restructure the main navigation around patient tasks, promote billing, and show the current location consistently.",
+      "layout": [
+        "Left navigation order: Home, Appointments, Records, Messages, Billing, Account, Help",
+        "Balance-due card at the top of the main area when a balance exists, above upcoming appointments",
+        "Account page uses tabs: Personal details, Insurance, Payments, Preferences"
+      ],
+      "components": [
+        {
+          "name": "NavItem",
+          "change": "Add a selected state with a distinct background and a bold label"
+        },
+        {
+          "name": "BalanceNotice",
+          "change": "New card with amount due, due date and a Pay now button; hidden when the balance is zero"
+        },
+        {
+          "name": "PageHeading",
+          "change": "Use the navigation label as the page heading"
+        }
+      ],
+      "copy": [
+        {
+          "element": "Billing page heading",
+          "current": "Statement center",
+          "proposed": "Billing & payments"
+        },
+        {
+          "element": "Account page heading",
+          "current": "Details",
+          "proposed": "Account"
+        }
+      ],
+      "states": [
+        {
+          "name": "No balance",
+          "behaviour": "The balance card is hidden and Billing remains in the navigation"
+        }
+      ],
+      "responsive_notes": [
+        "On narrow screens the navigation collapses to a menu that keeps Billing as a visible top-level entry"
+      ],
+      "acceptance_criteria": [
+        "A user can reach Billing from any screen in one click without using Help",
+        "Exactly one navigation item shows a selected state on every page",
+        "No page heading differs from the navigation label that leads to it"
+      ]
+    }
+  ],
+  "limitations": [
+    "The Profile page and any search feature were not supplied, so the exact overlap between Account and Profile is inferred from labels.",
+    "Reviewed from static screens; patient mental models were not tested, so grouping recommendations should be confirmed with a tree test or card sort.",
+    "Interaction design, accessibility and design system consistency were not assessed."
+  ],
+  "wcag_conformance_verified": false
+}

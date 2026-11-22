@@ -1,0 +1,30 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - name: Lint skill structure (frontmatter, links, size)
+        run: npm run validate:skill
+      - name: Unit tests
+        run: npm test
+      - name: Validate example reviews against schemas
+        run: npm run validate
+      - name: Check annotation geometry
+        run: npm run annotations
+      - name: Run evaluation suite
+        run: npm run eval

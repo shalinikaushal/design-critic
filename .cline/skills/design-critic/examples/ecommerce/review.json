@@ -1,0 +1,329 @@
+{
+  "schema_version": "0.1.0",
+  "meta": {
+    "title": "Design review: product page and cart (mobile web)",
+    "scope": "Product detail and cart screens of a fashion retailer, from two screenshots.",
+    "created": "2026-11-21"
+  },
+  "input_context": {
+    "sources": [
+      "screenshot"
+    ],
+    "platform": "mobile_web",
+    "product_domain": "e-commerce",
+    "audience": "Shoppers browsing on phones",
+    "goals": [
+      "Increase add-to-bag rate",
+      "Reduce cart abandonment"
+    ],
+    "screens": [
+      {
+        "id": "product-detail",
+        "name": "Product detail",
+        "width": 390,
+        "height": 1400
+      },
+      {
+        "id": "cart",
+        "name": "Cart",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "coverage": [
+    {
+      "dimension": "usability",
+      "assessed": true
+    },
+    {
+      "dimension": "information_architecture",
+      "assessed": false,
+      "limitation": "No navigation, category or search screens were supplied."
+    },
+    {
+      "dimension": "visual_hierarchy",
+      "assessed": true
+    },
+    {
+      "dimension": "interaction_design",
+      "assessed": true
+    },
+    {
+      "dimension": "accessibility",
+      "assessed": true
+    },
+    {
+      "dimension": "content_design",
+      "assessed": true
+    },
+    {
+      "dimension": "design_system",
+      "assessed": true
+    },
+    {
+      "dimension": "product_alignment",
+      "assessed": true
+    }
+  ],
+  "executive_summary": {
+    "verdict": "The product page presents the item well, but it withholds delivery cost and returns information until the cart and then defers shipping to a later step, which works against the goal of reducing abandonment. The size selector gives no guidance, and the cart quantity controls are small for touch.",
+    "top_finding_ids": [
+      "F-001",
+      "F-002",
+      "F-003"
+    ],
+    "strengths": [
+      "Large, well-cropped product imagery leads the page and the price is clearly legible.",
+      "The cart shows a thumbnail, size and colour for each line, which lets users confirm what they chose."
+    ]
+  },
+  "findings": [
+    {
+      "id": "F-001",
+      "dimension": "product_alignment",
+      "title": "Shipping cost is not shown until after the cart",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "product-detail",
+          "region": "area under the price and above the size chips",
+          "observation": "No delivery cost, delivery time or returns information appears anywhere on the product page."
+        },
+        {
+          "screen_id": "cart",
+          "region": "order summary block",
+          "observation": "The summary shows 'Shipping: calculated at next step' and a subtotal only, so the total cost is unknown."
+        }
+      ],
+      "impact": "Shoppers learn the full cost late, and unexpected delivery charges are a common reason to abandon a cart.",
+      "severity": "major",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Show a delivery cost threshold and returns line on the product page (for example 'Free delivery over $50, free returns') and display an estimated shipping value in the cart summary.",
+      "rationale": "Revealing cost earlier removes uncertainty at the moment of decision, which supports the abandonment goal; confidence is medium because the screenshots may omit content below the fold.",
+      "effort": "medium",
+      "annotation_ids": [
+        "A-001"
+      ]
+    },
+    {
+      "id": "F-002",
+      "dimension": "usability",
+      "title": "Add to bag looks active before a size is chosen, with no prompt",
+      "basis": "inferred",
+      "evidence": [
+        {
+          "screen_id": "product-detail",
+          "region": "size chips and Add to bag button",
+          "observation": "All size chips are unselected, no helper text asks the user to choose, and the Add to bag button is in its normal filled style."
+        }
+      ],
+      "impact": "If the button fails or errors without a size, users meet a dead end at the key conversion step; if it silently picks a size, they may receive the wrong one.",
+      "severity": "moderate",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Add a 'Select a size' prompt above the chips and either label the button 'Select size' until chosen or scroll to and highlight the chips on tap.",
+      "rationale": "Telling users what is needed before the action prevents the error path entirely; the behaviour on tap is inferred because a static screenshot cannot show it.",
+      "effort": "low",
+      "annotation_ids": [
+        "A-002"
+      ]
+    },
+    {
+      "id": "F-003",
+      "dimension": "interaction_design",
+      "title": "Cart quantity buttons are small touch targets",
+      "basis": "observed",
+      "evidence": [
+        {
+          "screen_id": "cart",
+          "region": "quantity stepper on each line item",
+          "observation": "The minus and plus buttons are drawn as small outlined squares close together beside the quantity number.",
+          "measurement": "approx. 28x28 px each, estimated from screenshot"
+        }
+      ],
+      "impact": "Mis-taps on a stepper next to a remove action can change or delete the wrong line on a phone.",
+      "severity": "moderate",
+      "confidence": "medium",
+      "reach": "primary_flow",
+      "recommendation": "Enlarge each stepper button to at least 44x44 px of touch area, with 8px or more between them, and keep the visual size if needed by padding the hit area.",
+      "rationale": "Finger-sized targets reduce accidental edits on the most frequently used cart control; measurements need confirming on the real layout.",
+      "effort": "low",
+      "wcag_refs": [
+        {
+          "criterion": "2.5.8",
+          "name": "Target Size (Minimum)",
+          "status": "needs_verification"
+        }
+      ],
+      "annotation_ids": [
+        "A-003"
+      ]
+    },
+    {
+      "id": "F-004",
+      "dimension": "design_system",
+      "title": "Add to bag and Checkout buttons appear to use two different greens",
+      "basis": "inferred",
+      "evidence": [
+        {
+          "screen_id": "product-detail",
+          "region": "Add to bag button",
+          "observation": "The button is a mid green."
+        },
+        {
+          "screen_id": "cart",
+          "region": "Checkout button",
+          "observation": "The button is a visibly darker green with a different corner radius."
+        }
+      ],
+      "impact": "Two primary-button styles for the same role make the system feel inconsistent and complicate maintenance.",
+      "severity": "minor",
+      "confidence": "medium",
+      "reach": "secondary",
+      "recommendation": "Use one primary button token for both and confirm in the source files which value is intended.",
+      "rationale": "Shared tokens keep primary actions recognisable across pages; confidence is limited because compression may shift the colours in the screenshots.",
+      "effort": "low"
+    }
+  ],
+  "assumptions": [
+    "The screenshots show the complete page content; nothing relevant sits below the captured area."
+  ],
+  "open_questions": [
+    "Is delivery cost known before an address is entered? If not, the estimate in the cart may need a postcode field.",
+    "What happens on tapping Add to bag without a size?"
+  ],
+  "scorecard": {
+    "formula_version": "1.0",
+    "profile": "default",
+    "dimensions": [
+      {
+        "dimension": "usability",
+        "assessed": true,
+        "score": 94,
+        "finding_count": 1,
+        "penalty": 6,
+        "rationale": "1 finding(s); total penalty 6."
+      },
+      {
+        "dimension": "information_architecture",
+        "assessed": false,
+        "score": null,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "Not assessed: No navigation, category or search screens were supplied."
+      },
+      {
+        "dimension": "visual_hierarchy",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      },
+      {
+        "dimension": "interaction_design",
+        "assessed": true,
+        "score": 94,
+        "finding_count": 1,
+        "penalty": 6,
+        "rationale": "1 finding(s); total penalty 6."
+      },
+      {
+        "dimension": "accessibility",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      },
+      {
+        "dimension": "content_design",
+        "assessed": true,
+        "score": 100,
+        "finding_count": 0,
+        "penalty": 0,
+        "rationale": "No findings in this dimension within the assessed scope."
+      },
+      {
+        "dimension": "design_system",
+        "assessed": true,
+        "score": 98.8,
+        "finding_count": 1,
+        "penalty": 1.2,
+        "rationale": "1 finding(s); total penalty 1.2."
+      },
+      {
+        "dimension": "product_alignment",
+        "assessed": true,
+        "score": 88,
+        "finding_count": 1,
+        "penalty": 12,
+        "rationale": "1 finding(s); total penalty 12."
+      }
+    ],
+    "overall": 96.4,
+    "band": "good",
+    "score_confidence": "low"
+  },
+  "annotations": [
+    {
+      "id": "A-001",
+      "screen_id": "cart",
+      "finding_id": "F-001",
+      "bbox": {
+        "x": 0.06,
+        "y": 0.66,
+        "width": 0.88,
+        "height": 0.06
+      },
+      "label": "Shipping deferred to next step",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-002",
+      "screen_id": "product-detail",
+      "finding_id": "F-002",
+      "bbox": {
+        "x": 0.05,
+        "y": 0.6,
+        "width": 0.9,
+        "height": 0.1
+      },
+      "label": "No size prompt before Add to bag",
+      "precision": "approximate"
+    },
+    {
+      "id": "A-003",
+      "screen_id": "cart",
+      "finding_id": "F-003",
+      "bbox": {
+        "x": 0.6,
+        "y": 0.3,
+        "width": 0.32,
+        "height": 0.05
+      },
+      "label": "Small quantity stepper",
+      "precision": "approximate"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "C-001",
+      "finding_ids": [
+        "F-001"
+      ],
+      "title": "Delivery and returns strip",
+      "description": "Add a compact strip under the price with delivery threshold and returns policy, linked to a short details sheet, and mirror an estimated shipping line in the cart summary.",
+      "tradeoffs": "Takes vertical space on the product page and requires the policy to be kept in sync with operations.",
+      "expected_impact": "Fewer shoppers reaching checkout surprised by costs, which can be measured as cart-to-checkout continuation."
+    }
+  ],
+  "redesign_specs": [],
+  "limitations": [
+    "Static screenshots only: tap behaviour, validation and animation were not observed.",
+    "Dimension scores reflect two screens and should not be read as a store-wide judgment."
+  ],
+  "wcag_conformance_verified": false
+}

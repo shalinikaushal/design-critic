@@ -1,0 +1,17 @@
+{
+  "id": "fintech-seeded-issues",
+  "kind": "review",
+  "category": "recall",
+  "description": "Fintech example must surface the hidden fee, the low-contrast helper text and the same-weight button pair.",
+  "review": "../examples/fintech/review.json",
+  "expect": {
+    "valid": true,
+    "min_findings": 3,
+    "must_find": [
+      { "dimension": "usability", "keywords": ["fee"] },
+      { "dimension": "accessibility", "keywords": ["contrast"] },
+      { "dimension": "visual_hierarchy", "keywords": ["cancel"] }
+    ],
+    "score_confidence_at_most": "medium"
+  }
+}

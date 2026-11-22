@@ -1,0 +1,14 @@
+{
+  "id": "ecommerce-screenshot-only-limits",
+  "kind": "review",
+  "category": "input-limits",
+  "description": "Screenshot-only e-commerce review must find the shipping-cost issue, mark unassessable dimensions, and keep score confidence low.",
+  "review": "../examples/ecommerce/review.json",
+  "expect": {
+    "valid": true,
+    "must_find": [{ "dimension": "product_alignment", "keywords": ["shipping"] }],
+    "min_unassessed": 1,
+    "min_open_questions": 1,
+    "score_confidence_at_most": "low"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://design-critic.dev/schemas/finding.schema.json",
+  "title": "Design finding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "dimension", "title", "basis", "evidence", "impact",
+    "severity", "confidence", "reach", "recommendation", "rationale", "effort"
+  ],
+  "properties": {
+    "id": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/findingId" },
+    "dimension": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/dimension" },
+    "title": { "type": "string", "minLength": 10, "maxLength": 140 },
+    "basis": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/basis" },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["screen_id", "region", "observation"],
+        "properties": {
+          "screen_id": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/screenId" },
+          "region": { "type": "string", "minLength": 3, "description": "Where on the screen, in words (for example 'primary CTA, bottom of form')." },
+          "observation": { "type": "string", "minLength": 25, "description": "What is concretely visible or stated in the input. Facts, not judgments." },
+          "measurement": { "type": "string", "description": "Optional estimate or measured value. Mark estimates as estimates (for example 'approx. 3.1:1, estimated from screenshot')." }
+        }
+      }
+    },
+    "impact": { "type": "string", "minLength": 20, "description": "Consequence for a user or the business." },
+    "severity": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/severity" },
+    "confidence": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/confidence" },
+    "reach": { "enum": ["primary_flow", "secondary"], "description": "Whether the issue sits on the primary task path or an edge/secondary path." },
+    "recommendation": { "type": "string", "minLength": 20 },
+    "rationale": { "type": "string", "minLength": 20, "description": "Why the recommendation matters and why it is expected to work." },
+    "effort": { "enum": ["low", "medium", "high"] },
+    "wcag_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["criterion", "status"],
+        "properties": {
+          "criterion": { "type": "string", "pattern": "^\\d\\.\\d+\\.\\d+$" },
+          "name": { "type": "string" },
+          "status": { "const": "needs_verification" }
+        }
+      }
+    },
+    "annotation_ids": {
+      "type": "array",
+      "items": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/annotationId" }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "basis": { "const": "assumption" } }, "required": ["basis"] },
+      "then": { "properties": { "confidence": { "const": "low" } } }
+    },
+    {
+      "if": { "properties": { "basis": { "const": "inferred" } }, "required": ["basis"] },
+      "then": { "properties": { "confidence": { "enum": ["medium", "low"] } } }
+    }
+  ]
+}

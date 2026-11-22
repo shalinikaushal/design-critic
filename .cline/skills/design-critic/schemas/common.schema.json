@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://design-critic.dev/schemas/common.schema.json",
+  "title": "Design Critic common definitions",
+  "description": "Shared enums and identifiers. The $id values are identifiers only; they are never fetched.",
+  "$defs": {
+    "dimension": {
+      "enum": [
+        "usability",
+        "information_architecture",
+        "visual_hierarchy",
+        "interaction_design",
+        "accessibility",
+        "content_design",
+        "design_system",
+        "product_alignment"
+      ]
+    },
+    "severity": { "enum": ["critical", "major", "moderate", "minor", "suggestion"] },
+    "confidence": { "enum": ["high", "medium", "low"] },
+    "basis": { "enum": ["observed", "inferred", "assumption"] },
+    "findingId": { "type": "string", "pattern": "^F-\\d{3}$" },
+    "annotationId": { "type": "string", "pattern": "^A-\\d{3}$" },
+    "conceptId": { "type": "string", "pattern": "^C-\\d{3}$" },
+    "specId": { "type": "string", "pattern": "^RS-\\d{3}$" },
+    "screenId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "normalizedBox": {
+      "type": "object",
+      "description": "Box in normalized coordinates. Origin is the top-left of the screen; x/y/width/height are fractions of screen width/height.",
+      "required": ["x", "y", "width", "height"],
+      "additionalProperties": false,
+      "properties": {
+        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+        "width": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "height": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

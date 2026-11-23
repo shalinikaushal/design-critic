@@ -3,6 +3,16 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - Unreleased
+
+Work in progress on branch `feature/v0.2.0`: real screenshot analysis, multi-screen journeys, evidence-region mapping, HTML reports with annotations, and a measured evaluation framework. v0.1.0 behaviour is preserved and protected by the checks below.
+
+### Added (Phase 0: baseline and backward-compatibility guard)
+- `scripts/tests/compat-v01.test.mjs`: pins the v0.1.0 example files, eval case files, scoring constants and example scores by hash and value; checks that v0.1.0 reviews validate and render byte-identically.
+- `scripts/check-compat.mjs` and `npm run compat`: runs the tests, examples and eval cases exactly as released at tag `v0.1.0` against the current code, in a temporary copy.
+- CI: the workflow also runs on `feature/**` branches, fetches full history and tags, and runs the compatibility check.
+- Git tag `v0.1.0` on commit `5b21937`.
+
 ## [0.1.0] - Unreleased
 
 ### Added

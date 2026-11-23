@@ -55,7 +55,8 @@ npm run check
 | `npm run validate` | Validate example `review.json` files (schema, cross-references, lint, score) |
 | `npm run annotations` | Check annotation geometry |
 | `npm run eval` | Run the evaluation suite |
-| `npm test` | Unit tests |
+| `npm test` | Unit tests, including the v0.1.0 regression pins |
+| `npm run compat` | Run the tests, examples and evals released at tag `v0.1.0` against the current code |
 | `npm run validate:skill` | Lint the skill package (frontmatter, links, size, JSON) |
 | `node .cline/skills/design-critic/scripts/compute-score.mjs review.json --write` | Compute the scorecard |
 | `node .cline/skills/design-critic/scripts/render-report.mjs review.json --out report.md` | Render Markdown |

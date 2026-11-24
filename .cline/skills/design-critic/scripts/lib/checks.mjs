@@ -7,6 +7,7 @@ import { computeScorecard, scorecardMatches } from "./scoring.mjs";
 import { crossRefErrors } from "./crossref.mjs";
 import { lintErrors } from "./lint.mjs";
 import { annotationErrors } from "./annotations.mjs";
+import { versionErrors } from "./version.mjs";
 
 export { crossRefErrors, lintErrors, annotationErrors };
 
@@ -25,8 +26,9 @@ export function getValidator() {
 
 export function schemaErrors(review) {
   const v = getValidator();
-  if (v(review)) return [];
-  return v.errors.map((e) => `schema: ${e.instancePath || "/"} ${e.message} ${JSON.stringify(e.params)}`);
+  const shape = v(review) ? [] : v.errors.map((e) => `schema: ${e.instancePath || "/"} ${e.message} ${JSON.stringify(e.params)}`);
+  // Version gate (0.2.0 fields in a 0.1.0 review). Runs only on a well-formed review.
+  return shape.length ? shape : versionErrors(review);
 }
 
 export function scoreErrors(r) {

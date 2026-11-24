@@ -7,6 +7,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 Work in progress on branch `feature/v0.2.0`: real screenshot analysis, multi-screen journeys, evidence-region mapping, HTML reports with annotations, and a measured evaluation framework. v0.1.0 behaviour is preserved and protected by the checks below.
 
+### Added (Phase 2: schema extension and version gating)
+- `review.schema.json` accepts `schema_version` `0.1.0` or `0.2.0`. New optional fields: `input_context.screens[].image`, `input_context.journey.transitions[]`, `findings[].scope`, `findings[].evidence[].bbox` and `.annotation_id`.
+- `scripts/lib/version.mjs`: the version gate. A `0.1.0` review using any 0.2.0-only field is rejected; unknown versions are rejected. Wired into `schemaErrors`, so every existing script uses it.
+- `references/schema-versions.md`: rules, field table, step-by-step migration example and the known limitations (image metadata, JPEG decoding) to resolve before the public release.
+- 23 tests (`version.test.mjs`, `version-strict.test.mjs`): positive and negative compatibility, strict typing of every new field, migration path.
+- v0.1.0 example reviews, reports, eval cases and scoring are unchanged.
+
 ### Added (Phase 1: image ingestion)
 - `scripts/lib/image.mjs`, `png.mjs`, `jpeg.mjs`: content-signature detection, structural validation (PNG CRCs and bounded inflate, JPEG segments), size limits, SHA-256. No new dependencies.
 - `schemas/manifest.schema.json`, `scripts/lib/manifest.mjs`, `scripts/ingest-screens.mjs` (`npm run ingest`, `npm run verify:fixtures`): strict manifest, build and verify.

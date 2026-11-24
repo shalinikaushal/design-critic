@@ -24,7 +24,9 @@
           "screen_id": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/screenId" },
           "region": { "type": "string", "minLength": 3, "description": "Where on the screen, in words (for example 'primary CTA, bottom of form')." },
           "observation": { "type": "string", "minLength": 25, "description": "What is concretely visible or stated in the input. Facts, not judgments." },
-          "measurement": { "type": "string", "description": "Optional estimate or measured value. Mark estimates as estimates (for example 'approx. 3.1:1, estimated from screenshot')." }
+          "measurement": { "type": "string", "description": "Optional estimate or measured value. Mark estimates as estimates (for example 'approx. 3.1:1, estimated from screenshot')." },
+          "bbox": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/normalizedBox", "description": "0.2.0 only. Region of the screenshot this evidence refers to, in normalized coordinates." },
+          "annotation_id": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/annotationId", "description": "0.2.0 only. The annotation that draws this evidence." }
         }
       }
     },
@@ -35,6 +37,7 @@
     "recommendation": { "type": "string", "minLength": 20 },
     "rationale": { "type": "string", "minLength": 20, "description": "Why the recommendation matters and why it is expected to work." },
     "effort": { "enum": ["low", "medium", "high"] },
+    "scope": { "enum": ["screen", "transition", "journey"], "description": "0.2.0 only. How far the finding reaches: one screen, one transition, or the whole journey." },
     "wcag_refs": {
       "type": "array",
       "items": {

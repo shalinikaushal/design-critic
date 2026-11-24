@@ -12,7 +12,7 @@
   ],
   "properties": {
     "$schema": { "type": "string" },
-    "schema_version": { "const": "0.1.0" },
+    "schema_version": { "enum": ["0.1.0", "0.2.0"], "description": "0.2.0 adds optional fields (see scripts/lib/version.mjs). Fields exclusive to 0.2.0 are rejected in a 0.1.0 review." },
     "meta": {
       "type": "object",
       "additionalProperties": false,

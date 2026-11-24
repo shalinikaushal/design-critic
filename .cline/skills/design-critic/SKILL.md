@@ -37,7 +37,7 @@ If unsure, use the full review for substantial requests and the quick review for
 
 Read only what the current step requires.
 
-**Always:** [references/evidence-and-confidence.md](references/evidence-and-confidence.md), [references/input-handling.md](references/input-handling.md)
+**Always:** [references/evidence-and-confidence.md](references/evidence-and-confidence.md), [references/input-handling.md](references/input-handling.md), [references/screenshot-ingestion.md](references/screenshot-ingestion.md) (when image files are supplied)
 
 **Dimension guides** (the eight dimensions):
 - [references/usability.md](references/usability.md)

@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.2.0",
+  "provenance": "synthetic",
+  "description": "Synthetic three-screen mock app for ingestion tests.",
+  "screens": [
+    {
+      "id": "01-home",
+      "order": 1,
+      "file": "01-home.png",
+      "format": "png",
+      "width_px": 390,
+      "height_px": 780,
+      "bytes": 16511,
+      "sha256": "8821dea416a0648be7d379881351893cee25c86d52f086b54d262dcdc8380dec"
+    },
+    {
+      "id": "02-detail",
+      "order": 2,
+      "file": "02-detail.jpg",
+      "format": "jpeg",
+      "width_px": 390,
+      "height_px": 780,
+      "bytes": 17954,
+      "sha256": "315153185b23c874645c9cdc457be96ed78d17d8c73b4454c858f06ed673819a"
+    },
+    {
+      "id": "03-confirm",
+      "order": 3,
+      "file": "03-confirm.png",
+      "format": "png",
+      "width_px": 390,
+      "height_px": 780,
+      "bytes": 11315,
+      "sha256": "17dc7e7c8e9d2dc91cface653de940ba55ec7a8bfcb220a1bc6ec735106e4aa8"
+    }
+  ]
+}

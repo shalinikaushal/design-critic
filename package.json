@@ -9,15 +9,17 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --test .cline/skills/design-critic/scripts/tests/scoring.test.mjs .cline/skills/design-critic/scripts/tests/checks.test.mjs .cline/skills/design-critic/scripts/tests/dimensions.test.mjs .cline/skills/design-critic/scripts/tests/compat-v01.test.mjs",
+    "test": "node --test .cline/skills/design-critic/scripts/tests/scoring.test.mjs .cline/skills/design-critic/scripts/tests/checks.test.mjs .cline/skills/design-critic/scripts/tests/dimensions.test.mjs .cline/skills/design-critic/scripts/tests/compat-v01.test.mjs .cline/skills/design-critic/scripts/tests/image.test.mjs .cline/skills/design-critic/scripts/tests/image-corrupt.test.mjs .cline/skills/design-critic/scripts/tests/manifest.test.mjs",
     "validate": "node .cline/skills/design-critic/scripts/validate-review.mjs .cline/skills/design-critic/examples",
     "validate:skill": "node .cline/skills/design-critic/scripts/check-skill.mjs",
     "annotations": "node .cline/skills/design-critic/scripts/check-annotations.mjs .cline/skills/design-critic/examples",
     "eval": "node .cline/skills/design-critic/scripts/run-evals.mjs",
     "render": "node .cline/skills/design-critic/scripts/render-report.mjs",
     "score": "node .cline/skills/design-critic/scripts/compute-score.mjs",
+    "ingest": "node .cline/skills/design-critic/scripts/ingest-screens.mjs",
+    "verify:fixtures": "node .cline/skills/design-critic/scripts/ingest-screens.mjs --verify .cline/skills/design-critic/evaluations/fixtures/ingest-basic/screens/manifest.json",
     "compat": "node .cline/skills/design-critic/scripts/check-compat.mjs --tag v0.1.0",
-    "check": "npm run validate:skill && npm test && npm run validate && npm run annotations && npm run eval && npm run compat"
+    "check": "npm run validate:skill && npm test && npm run validate && npm run annotations && npm run eval && npm run verify:fixtures && npm run compat"
   },
   "dependencies": {
     "ajv": "^8.17.1"

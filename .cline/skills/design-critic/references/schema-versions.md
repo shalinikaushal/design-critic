@@ -47,4 +47,17 @@ Downgrading means removing every field in the table above and then setting the v
 - **Image metadata is not inspected or removed.** EXIF, comments and other metadata in PNG or JPEG files are neither read nor stripped, and could carry location, device or personal data. Strip metadata before adding an image to a repository.
 - **JPEG data is not decoded.** Only the file structure is verified. Corruption inside the compressed data is not detected, and JPEG pixels cannot be sampled.
 - **Hashes prove identity, not content safety.** A valid image can still show sensitive information.
-- **Image references are not yet checked against files** inside `review.json`; the manifest check (`ingest-screens.mjs --verify`) does that today, and review-level verification is planned for Phase 3.
+- **Image references are checked only when a folder is known.** `validate-review.mjs` resolves `image.file` relative to the folder holding `review.json`. Calling `validateAll(review)` without `baseDir` runs only the offline checks (extension, aspect ratio, box bounds, annotation links).
+
+## Image reference checks (0.2.0 reviews only)
+
+| Check | Needs files |
+|---|---|
+| Extension matches `image.format` | No |
+| Image aspect ratio matches the screen (1% tolerance, so retina scaling passes) | No |
+| `evidence[].bbox` stays inside the image | No |
+| `evidence[].annotation_id` exists and belongs to the same finding and screen | No |
+| File exists, is a valid PNG or JPEG, and stays inside the review folder | Yes |
+| `sha256`, format and pixel size match the file | Yes |
+
+A changed or replaced image therefore invalidates the review. Boxes are bounds-checked only. Whether a box sits on the right element is not verified; the HTML report planned for Phase 6 lets a person check that.

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // Usage: node validate-review.mjs <review.json | directory>...
+import path from "node:path";
 import { findReviewFiles, readJson } from "./lib/io.mjs";
 import { validateAll } from "./lib/checks.mjs";
 
@@ -25,7 +26,7 @@ let failed = 0;
 for (const file of files) {
   let result;
   try {
-    result = validateAll(readJson(file));
+    result = validateAll(readJson(file), { baseDir: path.dirname(file) });
   } catch (e) {
     result = { errors: [`parse: ${e.message}`], warnings: [] };
   }

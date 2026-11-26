@@ -17,7 +17,7 @@ export function v2(name = "healthcare-portal") {
   const f = r.findings[0];
   f.scope = "screen";
   f.evidence[0].bbox = { x: 0.1, y: 0.1, width: 0.5, height: 0.2 };
-  const ann = r.annotations.find((a) => a.finding_id === f.id);
+  const ann = r.annotations.find((a) => a.finding_id === f.id && a.screen_id === f.evidence[0].screen_id);
   if (ann) f.evidence[0].annotation_id = ann.id;
   return r;
 }

@@ -7,6 +7,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 Work in progress on branch `feature/v0.2.0`: real screenshot analysis, multi-screen journeys, evidence-region mapping, HTML reports with annotations, and a measured evaluation framework. v0.1.0 behaviour is preserved and protected by the checks below.
 
+### Added (Phase 3: review-level image checks)
+- `scripts/lib/imagerefs.mjs`, wired into `validateAll` (new optional `{ baseDir }` argument; `validate-review.mjs` passes the review's folder). Applies to `schema_version` 0.2.0 only.
+- Checks: extension vs format, aspect ratio vs screen, evidence box bounds, evidence-to-annotation links, and, with a folder, file existence, validity, containment, SHA-256, format and pixel size.
+- 14 tests (`imagerefs.test.mjs`), with a mutation for each failure and a guard that 0.1.0 reviews are never image-checked.
+
 ### Added (Phase 2: schema extension and version gating)
 - `review.schema.json` accepts `schema_version` `0.1.0` or `0.2.0`. New optional fields: `input_context.screens[].image`, `input_context.journey.transitions[]`, `findings[].scope`, `findings[].evidence[].bbox` and `.annotation_id`.
 - `scripts/lib/version.mjs`: the version gate. A `0.1.0` review using any 0.2.0-only field is rejected; unknown versions are rejected. Wired into `schemaErrors`, so every existing script uses it.

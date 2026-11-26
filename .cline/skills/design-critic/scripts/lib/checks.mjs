@@ -8,8 +8,9 @@ import { crossRefErrors } from "./crossref.mjs";
 import { lintErrors } from "./lint.mjs";
 import { annotationErrors } from "./annotations.mjs";
 import { versionErrors } from "./version.mjs";
+import { imageRefErrors } from "./imagerefs.mjs";
 
-export { crossRefErrors, lintErrors, annotationErrors };
+export { crossRefErrors, lintErrors, annotationErrors, imageRefErrors };
 
 const ROOT_ID = "https://design-critic.dev/schemas/review.schema.json";
 let validator;
@@ -47,11 +48,11 @@ export function warnings(r) {
 }
 
 /** Runs the whole pipeline. Later stages are skipped if the schema fails, since they assume its shape. */
-export function validateAll(review) {
+export function validateAll(review, opts = {}) {
   const schema = schemaErrors(review);
   if (schema.length) return { errors: schema, warnings: [] };
   return {
-    errors: [...crossRefErrors(review), ...lintErrors(review), ...scoreErrors(review), ...annotationErrors(review)],
+    errors: [...crossRefErrors(review), ...lintErrors(review), ...scoreErrors(review), ...annotationErrors(review), ...imageRefErrors(review, opts)],
     warnings: warnings(review)
   };
 }

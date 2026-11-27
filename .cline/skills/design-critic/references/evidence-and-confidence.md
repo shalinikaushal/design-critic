@@ -66,6 +66,19 @@ Before a candidate becomes a finding, answer all of these. If any answer is no, 
 4. Is my recommendation specific enough to be implemented or tested?
 5. Does it fit the platform, audience and goals supplied?
 
+## Screenshot evidence rules (0.2.0 reviews)
+
+For `schema_version` 0.2.0 the validator enforces the following (`scripts/lib/evidence.mjs`). It applies a rule to a finding only when its evidence is on a screen that has an `image` reference, so it never demands boxes for screens with no image file. 0.1.0 reviews are not checked.
+
+| Rule | Why |
+|---|---|
+| An `observed` finding on an image screen needs at least one evidence item with a `bbox` | An observation about pixels must point at pixels. Otherwise use `inferred`. |
+| An `observed` observation must not hedge ("probably", "possibly", "presumably", "maybe", "I assume", "guessed", "not sure") | Hedging means the author is not sure, which is what `inferred` and `assumption` are for. |
+| An evidence `bbox` must be at least 8 px in both directions on its screen | Smaller boxes cannot mark an element. |
+| An evidence `bbox` and its linked `annotation_id` box must overlap by at least 50% of the smaller box | They should mark the same region. |
+
+What these rules do **not** prove: a box can pass every check and still sit on the wrong element, and an observation can be false without hedging. Only a person, or a ground-truth comparison in the Phase 7 evaluation, can establish that. The hedge list is deliberately short and matches whole words, so ordinary text such as "assumption label" is not flagged. If a hedge word appears in text that is quoted from the screen, put the quotation in `region` and describe it without the word.
+
 ## Negative evidence
 
 Record strengths with the same rigour as problems. A strength needs an observation too ("each onboarding screen has one primary button"). Strengths help the reader know what to keep and show that the review is not biased toward finding fault.

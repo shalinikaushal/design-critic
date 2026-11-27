@@ -18,7 +18,16 @@ export function v2(name = "healthcare-portal") {
   f.scope = "screen";
   f.evidence[0].bbox = { x: 0.1, y: 0.1, width: 0.5, height: 0.2 };
   const ann = r.annotations.find((a) => a.finding_id === f.id && a.screen_id === f.evidence[0].screen_id);
-  if (ann) f.evidence[0].annotation_id = ann.id;
+  if (ann) {
+    f.evidence[0].annotation_id = ann.id;
+    f.evidence[0].bbox = { ...ann.bbox }; // the evidence box marks the same region as its annotation
+  }
+  // Every other evidence item on the screen that has an image also needs a region (observed findings require one).
+  for (const g of r.findings) {
+    for (const ev of g.evidence) {
+      if (ev.screen_id === s.id && !ev.bbox) ev.bbox = { x: 0.1, y: 0.1, width: 0.5, height: 0.2 };
+    }
+  }
   return r;
 }
 

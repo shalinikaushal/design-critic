@@ -7,6 +7,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 Work in progress on branch `feature/v0.2.0`: real screenshot analysis, multi-screen journeys, evidence-region mapping, HTML reports with annotations, and a measured evaluation framework. v0.1.0 behaviour is preserved and protected by the checks below.
 
+### Added (Phase 5: evidence and basis lint)
+- `scripts/lib/evidence.mjs`, wired into `validateAll`. For 0.2.0 reviews, on screens that have an image reference: `observed` findings need a boxed evidence item; observed observations may not hedge; evidence boxes must be at least 8 px and must overlap their linked annotation by at least 50% of the smaller box.
+- Rules are scoped so they never fire for 0.1.0 reviews or for screens without an image file.
+- `references/evidence-and-confidence.md`: new "Screenshot evidence rules" section, including what the rules cannot prove.
+- 14 tests in `evidence.test.mjs`: positive, negative, false-positive guard, mutation and compatibility cases.
+
 ### Added (Phase 4: journey and information-architecture checks)
 - New optional 0.2.0-only fields `input_context.screens[].heading` and `.navigation[]` (`label`, `level`, `selected`, `destination`), added to the version gate (now 7 gated fields).
 - `scripts/lib/journey.mjs`: transitions must reference real journey screens, follow step order, cover every consecutive step pair and not repeat; `journey` and `transition` findings need a journey and evidence from two or more screens. Orphan screens warn.

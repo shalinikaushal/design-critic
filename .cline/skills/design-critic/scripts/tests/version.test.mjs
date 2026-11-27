@@ -84,9 +84,10 @@ test("migration: a 0.1.0 review upgraded step by step stays valid; downgrading w
   assert.deepEqual(validateAll(r).errors, []);
   const s = r.input_context.screens[0]; // step 2: image reference
   s.image = { file: "shots/home.png", sha256: HASH, format: "png", width_px: s.width, height_px: s.height };
-  assert.deepEqual(validateAll(r).errors, []);
-  r.findings[0].scope = "screen"; // step 3: scope and evidence region
-  r.findings[0].evidence[0].bbox = { x: 0.05, y: 0.1, width: 0.4, height: 0.1 };
+  // Phase 5: observed findings on a screen with an image now need a boxed evidence item.
+  assert.ok(validateAll(r).errors.some((e) => e.includes("no evidence item has a bbox")));
+  r.findings[0].scope = "screen"; // step 3: scope and evidence regions
+  for (const f of r.findings) for (const ev of f.evidence) if (ev.screen_id === s.id) ev.bbox = { x: 0.05, y: 0.1, width: 0.4, height: 0.1 };
   assert.deepEqual(validateAll(r).errors, []);
   r.schema_version = "0.1.0";
   assert.ok(validateAll(r).errors.length > 0);

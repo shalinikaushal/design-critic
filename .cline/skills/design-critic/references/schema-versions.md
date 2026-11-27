@@ -29,7 +29,7 @@ Phase 2 defines the shape only. Checks that use these fields (file and hash veri
 Start from any `0.1.0` review. Each step keeps the review valid, so you can stop at any point.
 
 1. **Bump the version.** Change `"schema_version": "0.1.0"` to `"0.2.0"`. Nothing else is required.
-2. **Reference the screenshot.** Run `ingest-screens.mjs` and copy the values for each screen into `input_context.screens[]`:
+2. **Reference the screenshot.** Run `ingest-screens.mjs` and copy the values for each screen into `input_context.screens[]`. Once a screen has an `image`, every `observed` finding with evidence on it needs a boxed evidence item (step 3), or its basis must change to `inferred` (see [evidence-and-confidence.md](evidence-and-confidence.md)):
    ```json
    { "id": "01-home", "name": "Home", "width": 390, "height": 780,
      "image": { "file": "01-home.png", "sha256": "<from manifest>", "format": "png", "width_px": 390, "height_px": 780 } }

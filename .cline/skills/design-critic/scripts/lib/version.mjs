@@ -5,6 +5,8 @@ export const SUPPORTED_VERSIONS = Object.freeze(["0.1.0", "0.2.0"]);
 /** Fields that exist only in 0.2.0. Paths use `[]` for "each array item". */
 export const V020_ONLY_FIELDS = Object.freeze([
   "input_context.screens[].image",
+  "input_context.screens[].heading",
+  "input_context.screens[].navigation",
   "input_context.journey.transitions",
   "findings[].scope",
   "findings[].evidence[].bbox",

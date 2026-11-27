@@ -7,6 +7,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 Work in progress on branch `feature/v0.2.0`: real screenshot analysis, multi-screen journeys, evidence-region mapping, HTML reports with annotations, and a measured evaluation framework. v0.1.0 behaviour is preserved and protected by the checks below.
 
+### Added (Phase 4: journey and information-architecture checks)
+- New optional 0.2.0-only fields `input_context.screens[].heading` and `.navigation[]` (`label`, `level`, `selected`, `destination`), added to the version gate (now 7 gated fields).
+- `scripts/lib/journey.mjs`: transitions must reference real journey screens, follow step order, cover every consecutive step pair and not repeat; `journey` and `transition` findings need a journey and evidence from two or more screens. Orphan screens warn.
+- `scripts/lib/ia.mjs`: one label leading to two screens, unknown destinations, multiple selected items per level and a selected item leading elsewhere are errors. Missing selection, label and heading mismatch, multiple labels for one screen and unreachable screens are warnings.
+- `references/journey-analysis.md`, linked from SKILL.md and the journey workflow.
+- Tests: `journey.test.mjs`, `ia.test.mjs`, plus updated gate tests. All checks apply to 0.2.0 reviews only; 0.1.0 reviews are never journey- or IA-checked.
+
 ### Added (Phase 3: review-level image checks)
 - `scripts/lib/imagerefs.mjs`, wired into `validateAll` (new optional `{ baseDir }` argument; `validate-review.mjs` passes the review's folder). Applies to `schema_version` 0.2.0 only.
 - Checks: extension vs format, aspect ratio vs screen, evidence box bounds, evidence-to-annotation links, and, with a folder, file existence, validity, containment, SHA-256, format and pixel size.

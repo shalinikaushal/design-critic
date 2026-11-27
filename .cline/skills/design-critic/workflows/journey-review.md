@@ -17,6 +17,7 @@ Use when the input is a multi-screen flow, a prototype or a described user journ
    - Steps that could merge or be removed.
    - Dead ends and unclear success or failure states.
    - Changes in terminology, layout or component behaviour between steps.
+   For `schema_version` 0.2.0 reviews, transcribe headings, navigation and transitions, and choose each finding's `scope`, following [journey-analysis.md](../references/journey-analysis.md).
 5. **Apply the dimension guides** to the findings that matter for the journey, mostly [usability.md](../references/usability.md), [information-architecture.md](../references/information-architecture.md), [content-design.md](../references/content-design.md) and [product-alignment.md](../references/product-alignment.md).
 6. **Write findings with evidence from every screen involved**, one evidence item per screen.
 7. **Continue with steps 5 to 11 of [full-review.md](full-review.md)** (classify, annotate, concepts, assemble, score, validate, render).

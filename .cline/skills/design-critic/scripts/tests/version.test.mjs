@@ -8,7 +8,7 @@ import { exampleNames, load, v2, withJourney, HASH } from "./version-helpers.mjs
 
 test("supported versions and the 0.2.0-only field list are as documented", () => {
   assert.deepEqual([...SUPPORTED_VERSIONS], ["0.1.0", "0.2.0"]);
-  assert.equal(V020_ONLY_FIELDS.length, 5);
+  assert.equal(V020_ONLY_FIELDS.length, 7);
 });
 
 test("positive: every bundled 0.1.0 example validates unchanged", () => {
@@ -41,6 +41,8 @@ test("negative: each 0.2.0-only field is rejected in a 0.1.0 review, naming the 
   const cases = {
     "input_context.screens[0].image": (r) => (r.input_context.screens[0].image = v2().input_context.screens[0].image),
     "input_context.journey.transitions": (r) => Object.assign(r.input_context, withJourney(structuredClone(r)).input_context),
+    "input_context.screens[0].heading": (r) => (r.input_context.screens[0].heading = "Home"),
+    "input_context.screens[0].navigation": (r) => (r.input_context.screens[0].navigation = [{ label: "Home", level: 1 }]),
     "findings[0].scope": (r) => (r.findings[0].scope = "screen"),
     "findings[0].evidence[0].bbox": (r) => (r.findings[0].evidence[0].bbox = { x: 0, y: 0, width: 0.5, height: 0.5 }),
     "findings[0].evidence[0].annotation_id": (r) => (r.findings[0].evidence[0].annotation_id = "A-001")

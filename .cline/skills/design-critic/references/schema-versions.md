@@ -16,6 +16,8 @@
 |---|---|
 | `input_context.screens[].image` | Screenshot reference copied from the ingest manifest: `file`, `sha256`, `format`, `width_px`, `height_px`. |
 | `input_context.journey.transitions[]` | `from`, `to`, `trigger`, optional `expected` and `observed`. |
+| `input_context.screens[].heading` | Visible screen title, copied as shown. |
+| `input_context.screens[].navigation[]` | Visible navigation items: `label`, `level`, optional `selected` and `destination`. |
 | `findings[].scope` | `screen`, `transition` or `journey`. |
 | `findings[].evidence[].bbox` | Normalised region (0 to 1, origin top-left) the evidence refers to. |
 | `findings[].evidence[].annotation_id` | The annotation that draws this evidence. |

@@ -9,8 +9,10 @@ import { lintErrors } from "./lint.mjs";
 import { annotationErrors } from "./annotations.mjs";
 import { versionErrors } from "./version.mjs";
 import { imageRefErrors } from "./imagerefs.mjs";
+import { journeyErrors, journeyWarnings } from "./journey.mjs";
+import { iaErrors, iaWarnings } from "./ia.mjs";
 
-export { crossRefErrors, lintErrors, annotationErrors, imageRefErrors };
+export { crossRefErrors, lintErrors, annotationErrors, imageRefErrors, journeyErrors, iaErrors };
 
 const ROOT_ID = "https://design-critic.dev/schemas/review.schema.json";
 let validator;
@@ -52,7 +54,7 @@ export function validateAll(review, opts = {}) {
   const schema = schemaErrors(review);
   if (schema.length) return { errors: schema, warnings: [] };
   return {
-    errors: [...crossRefErrors(review), ...lintErrors(review), ...scoreErrors(review), ...annotationErrors(review), ...imageRefErrors(review, opts)],
-    warnings: warnings(review)
+    errors: [...crossRefErrors(review), ...lintErrors(review), ...scoreErrors(review), ...annotationErrors(review), ...imageRefErrors(review, opts), ...journeyErrors(review), ...iaErrors(review)],
+    warnings: [...warnings(review), ...journeyWarnings(review), ...iaWarnings(review)]
   };
 }

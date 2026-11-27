@@ -34,6 +34,23 @@
           "width": { "type": "integer", "minimum": 1 },
           "height": { "type": "integer", "minimum": 1 },
           "description": { "type": "string" },
+          "heading": { "type": "string", "minLength": 1, "maxLength": 120, "description": "0.2.0 only. The visible page or screen title, copied as shown. Used to compare navigation labels with destinations." },
+          "navigation": {
+            "type": "array",
+            "maxItems": 40,
+            "description": "0.2.0 only. Navigation items visible on this screen, transcribed as shown (labels are copied, not paraphrased).",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label", "level"],
+              "properties": {
+                "label": { "type": "string", "minLength": 1, "maxLength": 80 },
+                "level": { "type": "integer", "minimum": 1, "maximum": 4, "description": "1 = primary navigation, 2 = secondary, and so on." },
+                "selected": { "type": "boolean", "description": "True when the screen shows this item as the current location." },
+                "destination": { "$ref": "https://design-critic.dev/schemas/common.schema.json#/$defs/screenId", "description": "Screen this item leads to, when known from the supplied material." }
+              }
+            }
+          },
           "image": {
             "type": "object",
             "description": "0.2.0 only. Reference to the screenshot file, copied from the ingest manifest (never estimated).",
